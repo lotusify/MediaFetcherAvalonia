@@ -30,10 +30,9 @@ MediaFetcherAvalonia provides a user-friendly interface to download video and au
     * Cancel ongoing downloads.
 * **Error Handling**: Configure how download errors are handled (None, Ignore Errors, Abort on Errors).
 * **Settings Persistence**: Saves configuration (output path, filename template, error handling) to a `settings.json` file.
-* **Platform Features**: Includes basic support for the Mica backdrop effect on compatible Windows 11 systems.
 
 ## Requirements
-
+Note: There is a version that includes everything (yt-dlp, ffmpeg, runtime in one folder). Check out Github Release!
 1.  **.NET Runtime**: The specific version required depends on how the application was built, but a modern .NET Desktop Runtime (e.g., .NET 6, 7, or 8) is needed.
 2.  **`yt-dlp`**: The core `yt-dlp` executable **must** be present. The application will look for it in:
     * The same directory as the `MediaFetcherAvalonia` executable.
