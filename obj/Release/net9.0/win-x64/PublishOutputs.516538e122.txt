@@ -1,0 +1,4 @@
+C:\Users\Lotusify\Desktop\MediaFetcherPacked\MediaFetcher\av_libglesv2.dll
+C:\Users\Lotusify\Desktop\MediaFetcherPacked\MediaFetcher\libHarfBuzzSharp.dll
+C:\Users\Lotusify\Desktop\MediaFetcherPacked\MediaFetcher\libSkiaSharp.dll
+C:\Users\Lotusify\Desktop\MediaFetcherPacked\MediaFetcher\MediaFetcherAvalonia.exe

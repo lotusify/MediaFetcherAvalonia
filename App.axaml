@@ -11,7 +11,6 @@
     <Application.Styles>
         <!-- Load FluentAvalonia theme first -->
         <sty:FluentAvaloniaTheme PreferSystemTheme="True" />
-  
         <!-- Override TextBlock and SymbolIcon styles when Mica is active -->
         <Style Selector=":is(Window)[ActualTransparencyLevel=Mica] TextBlock">
             <Setter Property="Effect" Value="{x:Null}" />
@@ -24,6 +23,6 @@
     <!-- Set application icon for taskbar -->
     <Application.RequestedThemeVariant>Default</Application.RequestedThemeVariant>
     <Application.Resources>
-        <FontFamily x:Key="InterFont">/Assets/Inter-Regular.ttf#Inter</FontFamily>
+        <FontFamily x:Key="JetbrainMonoRegular">/Assets/JetBrainsMono.ttf#JetbrainMonoRegular</FontFamily>
     </Application.Resources>
 </Application>

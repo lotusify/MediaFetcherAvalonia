@@ -5,6 +5,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using System;
 using System.Linq;
+using System.Text;
 using FluentAvalonia.Styling;
 
 namespace MediaFetcherAvalonia;
@@ -13,6 +14,9 @@ public partial class App : Application
 {
     public override void Initialize()
     {
+        // Register UTF-8 encoding provider for better international text support
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        
         AvaloniaXamlLoader.Load(this);
     }
 

@@ -9,8 +9,9 @@
     WindowState="Maximized"
     Icon="/Assets/MediaFetcher.ico"
     UseLayoutRounding="True"
-    TransparencyLevelHint="Mica, Transparent"
-    Background="Transparent">
+    TransparencyLevelHint="Transparent">
+  
+  <!-- Background="Transparent" -->
 
   <fa:NavigationView
       x:Name="NavView"
@@ -44,14 +45,15 @@
         <Grid
             x:Name="HomePage"
             Margin="20"
-            RowDefinitions="Auto,Auto,Auto,Auto,Auto,*"
+            RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*"
             IsVisible="True">
 
           <!-- Row 0: URL input -->
           <!--<TextBlock Grid.Row="0" Text="Enter a URL:"/> -->
-          <Grid Grid.Row="1" ColumnDefinitions="* 8 Auto">
+          <Grid Grid.Row="1" ColumnDefinitions="* 8 Auto 8 Auto">
             <TextBox x:Name="UrlBox" Grid.Column="0" Watermark="Enter a URL of media" VerticalContentAlignment="Center" KeyDown="UrlBox_KeyDown"/>
-            <Button x:Name="DownloadBtn" Content="Fetch" Grid.Column="2" IsDefault="True"/>
+            <Button x:Name="DownloadBtn" Content="Fetch" Grid.Column="2" IsDefault="True" Classes="accent" MinWidth="80"/>
+            <Button Grid.Column="4" Name="CancelBtn" Content="Stop" IsEnabled="False" MinWidth="65" Click="CancelBtn_Click"/>
           </Grid>
 
           <!-- Row 1: Force format & Playlist -->
@@ -87,13 +89,23 @@
           <TextBlock Grid.Row="4"
                      Text="Log:"
                      Margin="0,8,0,4"/>
-
+          
+          <ProgressBar Name="DownloadProgressBar"
+                       Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
+                       Minimum="0"
+                       Maximum="100"
+                       IsIndeterminate="True"
+                       IsVisible="False"
+                       Margin="0,5,0,10"/>
+          
           <!-- Row 4: Resizable log area -->
-          <ScrollViewer Grid.Row="5">
+          <ScrollViewer Grid.Row="6">
             <TextBox x:Name="LogBox"
                      IsReadOnly="True"
                      AcceptsReturn="True"
-                     TextWrapping="WrapWithOverflow"/>
+                     TextWrapping="WrapWithOverflow"
+                     FontSize="12.5"
+                     Text="Running logs here..."/>
           </ScrollViewer>
         </Grid>
 
@@ -102,7 +114,7 @@
             x:Name="SettingsPage"
             Margin="20"
             IsVisible="False">
-          <StackPanel Spacing="12">
+          <StackPanel Spacing="7">
 
             <!-- Current/custom output directory -->
             <TextBlock Text="Output Directory:"/>
@@ -139,7 +151,8 @@
             <Button x:Name="SaveSettingsBtn"
                     Content="Save Settings"
                     HorizontalAlignment="Left"
-                    Margin="0,24,0,0"/>
+                    Margin="0,24,0,0"
+                    Classes="accent"/>
           </StackPanel>
         </ScrollViewer>
 
