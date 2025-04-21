@@ -6,7 +6,7 @@ A desktop application built with Avalonia (a cross-platform UI framework for .NE
 
 ## Description
 
-MediaFetcherAvalonia provides a user-friendly interface to download video and audio from various websites supported by `yt-dlp`. It allows users to easily select formats, resolutions, and other options without needing to use the command line directly.
+MediaFetcher provides a user-friendly interface to download video and audio from various websites supported by [yt-dlp](https://github.com/yt-dlp/yt-dlp). It allows users to easily select formats, resolutions, and other options without needing to use the command line directly.
 
 ## Features
 
