@@ -11,13 +11,6 @@
     <Application.Styles>
         <!-- Load FluentAvalonia theme first -->
         <sty:FluentAvaloniaTheme PreferSystemTheme="True" />
-        <!-- Override TextBlock and SymbolIcon styles when Mica is active -->
-        <Style Selector=":is(Window)[ActualTransparencyLevel=Mica] TextBlock">
-            <Setter Property="Effect" Value="{x:Null}" />
-        </Style>
-        <Style Selector=":is(Window)[ActualTransparencyLevel=Mica] fa|SymbolIcon">
-            <Setter Property="Effect" Value="{x:Null}" />
-        </Style>
     </Application.Styles>
 
     <!-- Set application icon for taskbar -->
