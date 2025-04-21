@@ -52,8 +52,13 @@ Note: There is a version that includes everything (yt-dlp, ffmpeg, runtime in on
 8.  Use the "Cancel" button to stop a download.
 9.  Navigate to the "Settings" page (gear icon) to configure the output directory, filename template, and error handling. Click "Save Settings" to apply changes.
 
+## Drawbacks / Limitations
 
-You can manually edit this file, but it's easier to use the Settings page within the application.
+* **Manual Dependency Installation**: Does not automatically download or install `yt-dlp` or `ffmpeg`. Users must install these manually.
+* **No Playlist Item Selection**: When downloading a playlist, the entire playlist is downloaded; there is no option to select specific videos from it.
+* **Limited Customization**: Lacks basic options like theme selection or language settings.
+* **Manual Dependency Management**: Does not manage `yt-dlp`/`ffmpeg` updates or versions; users must handle this themselves.
+* **Missing Advanced Options**: Does not include advanced `yt-dlp` features like SponsorBlock integration, keeping original downloaded files before merging/recoding, etc.
 
 ## Disclaimer
 
