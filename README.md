@@ -1,7 +1,4 @@
-# MediaFetcherAvalonia
-
-<img src="Assets/MediaFetcher.ico" alt="MediaFetcherAvalonia Icon" width="64"/>
-
+<img src="Assets/MediaFetcher.ico" alt="MediaFetcherAvalonia Icon" width="64"/> # MediaFetcherAvalonia
 A desktop application built with Avalonia (a cross-platform UI framework for .NET) that acts as a graphical frontend for the popular command-line media downloader `yt-dlp`.
 
 ## Description
@@ -53,15 +50,9 @@ MediaFetcherAvalonia provides a user-friendly interface to download video and au
 8.  Use the "Cancel" button to stop a download.
 9.  Navigate to the "Settings" page (gear icon) to configure the output directory, filename template, and error handling. Click "Save Settings" to apply changes.
 
-## Configuration
-
-Settings are saved automatically to a `settings.json` file located in the application's data directory. This is typically:
-* **Windows**: `%APPDATA%\MediaFetcher\` (e.g., `C:\Users\<YourUsername>\AppData\Roaming\MediaFetcher`)
-* **(Likely) Linux**: `~/.config/MediaFetcher/`
-* **(Likely) macOS**: `~/Library/Application Support/MediaFetcher/`
 
 You can manually edit this file, but it's easier to use the Settings page within the application.
 
 ## Disclaimer
 
-**Please Note:** This application was developed as a school project and large portions of the code were generated with the assistance of AI. (Sorry, teacher!)
+**Please Note:** This application was developed as a school project and large portions of the code were generated with the assistance of AI. (Sorry, my teacher!)
