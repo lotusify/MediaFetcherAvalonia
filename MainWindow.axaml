@@ -1,0 +1,146 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="using:FluentAvalonia.UI.Controls"
+    x:Class="MediaFetcherAvalonia.MainWindow"
+    Title=" MediaFetcher"
+    Width="960"
+    Height="540"
+    WindowState="Maximized"
+    Icon="/Assets/MediaFetcher.ico">
+
+  <ui:NavigationView
+      x:Name="NavView"
+      PaneDisplayMode="LeftCompact"
+      IsPaneOpen="False"
+      IsBackButtonVisible="False"
+      IsSettingsVisible="False"
+      >
+
+    <!-- TOP menu only has Home -->
+    <ui:NavigationView.MenuItems>
+      <ui:NavigationViewItem Tag="HomePage" Content="Home">
+        <ui:NavigationViewItem.IconSource>
+          <ui:SymbolIconSource Symbol="Home"/>
+        </ui:NavigationViewItem.IconSource>
+      </ui:NavigationViewItem>
+    </ui:NavigationView.MenuItems>
+    
+      <!-- FOOTER menu holds Settings -->
+    <ui:NavigationView.FooterMenuItems>
+      <ui:NavigationViewItem Tag="SettingsPage" Content="Settings">
+        <ui:NavigationViewItem.IconSource>
+          <ui:SymbolIconSource Symbol="Settings"/>
+        </ui:NavigationViewItem.IconSource>
+      </ui:NavigationViewItem>
+    </ui:NavigationView.FooterMenuItems>
+
+    <ui:NavigationView.Content>
+      <Grid>
+        <!-- HOME PAGE -->
+        <Grid
+            x:Name="HomePage"
+            Margin="20"
+            RowDefinitions="Auto,Auto,Auto,Auto,Auto,*"
+            IsVisible="True">
+
+          <!-- Row 0: URL input -->
+          <!--<TextBlock Grid.Row="0" Text="Enter a URL:"/> -->
+          <Grid Grid.Row="1" ColumnDefinitions="* 8 Auto">
+            <TextBox x:Name="UrlBox" Grid.Column="0" Watermark="Enter a URL of media" KeyDown="UrlBox_KeyDown"/>
+            <Button x:Name="DownloadBtn" Content="Fetch" Grid.Column="2" IsDefault="True"/>
+          </Grid>
+
+          <!-- Row 1: Force format & Playlist -->
+          <StackPanel Grid.Row="2"
+                      Orientation="Horizontal"
+                      HorizontalAlignment="Right"
+                      Margin="0,8,0,0"
+                      Spacing="12">
+            <CheckBox x:Name="ForceCheck" Content="Force format" IsChecked="True"/>
+            <CheckBox x:Name="PlaylistCheck" Content="Playlist"/>
+          </StackPanel>
+
+          <!-- Row 2: Media Type / Format / Resolution -->
+          <Grid Grid.Row="3"
+                ColumnDefinitions="Auto 50 Auto 50 Auto"
+                RowDefinitions="Auto 4 Auto"
+                Margin="0,8,0,0">
+            <TextBlock Text="Media Type:" Grid.Column="0" Grid.Row="0"/>
+            <ComboBox x:Name="TypeCombo" Grid.Column="0" Grid.Row="2">
+              <ComboBoxItem Tag="video">Video (with audio)</ComboBoxItem>
+              <ComboBoxItem Tag="videoNoAudio">Video (without audio)</ComboBoxItem>
+              <ComboBoxItem Tag="audio">Audio only</ComboBoxItem>
+            </ComboBox>
+
+            <TextBlock Text="Format:" Grid.Column="2" Grid.Row="0"/>
+            <ComboBox x:Name="FormatCombo" Grid.Column="2" Grid.Row="2"/>
+
+            <TextBlock Text="Resolution:" Grid.Column="4" Grid.Row="0"/>
+            <ComboBox x:Name="ResolutionCombo" Grid.Column="4" Grid.Row="2"/>
+          </Grid>
+
+          <!-- Row 3: Log label -->
+          <TextBlock Grid.Row="4"
+                     Text="Log:"
+                     Margin="0,8,0,4"/>
+
+          <!-- Row 4: Resizable log area -->
+          <ScrollViewer Grid.Row="5">
+            <TextBox x:Name="LogBox"
+                     IsReadOnly="True"
+                     AcceptsReturn="True"
+                     TextWrapping="WrapWithOverflow"/>
+          </ScrollViewer>
+        </Grid>
+
+        <!-- SETTINGS PAGE -->
+        <ScrollViewer
+            x:Name="SettingsPage"
+            Margin="20"
+            IsVisible="False">
+          <StackPanel Spacing="12">
+
+            <!-- Current/custom output directory -->
+            <TextBlock Text="Output Directory:"/>
+            <Grid ColumnDefinitions="* 8 Auto">
+              <TextBox x:Name="CustomOutputTemplateBox" Grid.Column="0"
+                       Watermark="Enter a directory"/>
+              <Button x:Name="BrowseDirectoryBtn" Grid.Column="2" Content="Browse..." />
+            </Grid>
+            <TextBlock x:Name="CurrentOutputDirBlock" Foreground="Gray" Margin="0,4,0,8" 
+                       TextWrapping="Wrap" FontSize="12"/>
+            
+            <!-- Custom file name -->
+            <TextBlock Text="Custom File Name Template:"/>
+            <TextBox x:Name="CustomFileNameBox"
+                     Watermark="%(title)s.%(ext)s"/>
+            <TextBlock Foreground="Gray" Margin="0,4,0,8" FontSize="12">
+              Example: "%(title)s.%(ext)s" creates files using video title
+            </TextBlock>
+
+            
+            <StackPanel>
+              <TextBlock Text="Error Handling:" Margin="0,4,0,4"/>
+              <ComboBox x:Name="ErrorHandlingCombo" Width="250" HorizontalAlignment="Left">
+                <ComboBoxItem Content="None" Tag="None"/>
+                <ComboBoxItem Content="Ignore Errors" Tag="IgnoreErrors"/>
+                <ComboBoxItem Content="Abort on Error" Tag="AbortOnErrors"/>
+              </ComboBox>
+              <TextBlock Foreground="Gray" Margin="0,4,0,8" FontSize="12">
+                "Ignore Errors" continues downloading when errors occur, "Abort on Error" stops the process
+              </TextBlock>
+            </StackPanel>
+            
+            <!-- Save button -->
+            <Button x:Name="SaveSettingsBtn"
+                    Content="Save Settings"
+                    HorizontalAlignment="Left"
+                    Margin="0,24,0,0"/>
+          </StackPanel>
+        </ScrollViewer>
+
+      </Grid>
+    </ui:NavigationView.Content>
+  </ui:NavigationView>
+</Window>

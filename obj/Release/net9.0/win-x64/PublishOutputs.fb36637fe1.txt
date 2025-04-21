@@ -1,0 +1,5 @@
+D:\Documents\Project\MediaFetcherAvalonia\bin\Release\net9.0\win-x64\publish\MediaFetcherAvalonia.pdb
+D:\Documents\Project\MediaFetcherAvalonia\bin\Release\net9.0\win-x64\publish\av_libglesv2.dll
+D:\Documents\Project\MediaFetcherAvalonia\bin\Release\net9.0\win-x64\publish\libHarfBuzzSharp.dll
+D:\Documents\Project\MediaFetcherAvalonia\bin\Release\net9.0\win-x64\publish\libSkiaSharp.dll
+D:\Documents\Project\MediaFetcherAvalonia\bin\Release\net9.0\win-x64\publish\MediaFetcherAvalonia.exe
