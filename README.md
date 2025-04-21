@@ -40,7 +40,7 @@ Note: There is a version that includes everything (yt-dlp, ffmpeg, runtime in on
     * The same directory as the `MediaFetcherAvalonia` executable.
     * Any directory listed in your system's PATH environment variable.
     You can download the latest `yt-dlp` from its [official yt-dlp GitHub repository](https://github.com/yt-dlp/yt-dlp).
-3.  **(Optional but Recommended) `ffmpeg`**: While not directly checked for by this application, `yt-dlp` often requires `ffmpeg` for merging separate video/audio streams or for format conversions (especially when using the "Force Format" option). Ensure `ffmpeg` is installed and accessible by `yt-dlp` (usually by placing it in the same directory as `yt-dlp` or adding it to the system PATH). You can download it [here](https://ffmpeg.org/download.html).
+3.  **(Optional but really really Recommended) `ffmpeg`**: While not directly checked for by this application, `yt-dlp` often requires `ffmpeg` for merging separate video/audio streams or for format conversions (especially when using the "Force Format" option). Ensure `ffmpeg` is installed and accessible by `yt-dlp` (usually by placing it in the same directory as `yt-dlp` or adding it to the system PATH). You can download it [here](https://ffmpeg.org/download.html).
 
 ## Usage
 
