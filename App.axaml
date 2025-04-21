@@ -1,27 +1,29 @@
 <Application
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:sty="using:FluentAvalonia.Styling"
-    x:Class="MediaFetcherAvalonia.App">
+    xmlns:sty="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
+    xmlns:ui="using:FluentAvalonia.UI.Controls"
+    x:Class="MediaFetcherAvalonia.App"
+    xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+    >
+
 
     <Application.Styles>
-        <!-- This attaches all of Fluent v2's styles and controls -->
-        <sty:FluentAvaloniaTheme/>
+        <!-- Load FluentAvalonia theme first -->
+        <sty:FluentAvaloniaTheme PreferSystemTheme="True" />
+  
+        <!-- Override TextBlock and SymbolIcon styles when Mica is active -->
+        <Style Selector=":is(Window)[ActualTransparencyLevel=Mica] TextBlock">
+            <Setter Property="Effect" Value="{x:Null}" />
+        </Style>
+        <Style Selector=":is(Window)[ActualTransparencyLevel=Mica] fa|SymbolIcon">
+            <Setter Property="Effect" Value="{x:Null}" />
+        </Style>
     </Application.Styles>
-    
+
     <!-- Set application icon for taskbar -->
     <Application.RequestedThemeVariant>Default</Application.RequestedThemeVariant>
+    <Application.Resources>
+        <FontFamily x:Key="InterFont">/Assets/Inter-Regular.ttf#Inter</FontFamily>
+    </Application.Resources>
 </Application>
-
-<!-- 
-NOTE: If the application icon isn't showing in the taskbar, it might be due to Windows icon cache.
-To clear the Windows icon cache:
-1. Close your application
-2. Open Command Prompt as Administrator
-3. Run these commands:
-   - taskkill /f /im explorer.exe
-   - cd /d %userprofile%\AppData\Local
-   - del IconCache.db /a
-   - start explorer.exe
-4. Alternatively, you can try changing the icon file name to force Windows to recognize it as new
--->

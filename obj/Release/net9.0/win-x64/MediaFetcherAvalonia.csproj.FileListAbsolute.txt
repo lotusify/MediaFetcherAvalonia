@@ -2,7 +2,6 @@ D:\Documents\Project\MediaFetcherAvalonia\bin\Release\net9.0\win-x64\MediaFetche
 D:\Documents\Project\MediaFetcherAvalonia\bin\Release\net9.0\win-x64\MediaFetcherAvalonia.deps.json
 D:\Documents\Project\MediaFetcherAvalonia\bin\Release\net9.0\win-x64\MediaFetcherAvalonia.runtimeconfig.json
 D:\Documents\Project\MediaFetcherAvalonia\bin\Release\net9.0\win-x64\MediaFetcherAvalonia.dll
-D:\Documents\Project\MediaFetcherAvalonia\bin\Release\net9.0\win-x64\MediaFetcherAvalonia.pdb
 D:\Documents\Project\MediaFetcherAvalonia\bin\Release\net9.0\win-x64\Avalonia.Base.dll
 D:\Documents\Project\MediaFetcherAvalonia\bin\Release\net9.0\win-x64\Avalonia.Controls.dll
 D:\Documents\Project\MediaFetcherAvalonia\bin\Release\net9.0\win-x64\Avalonia.DesignerSupport.dll
@@ -225,8 +224,8 @@ D:\Documents\Project\MediaFetcherAvalonia\obj\Release\net9.0\win-x64\MediaFetche
 D:\Documents\Project\MediaFetcherAvalonia\obj\Release\net9.0\win-x64\MediaFetcherAvalonia.AssemblyInfo.cs
 D:\Documents\Project\MediaFetcherAvalonia\obj\Release\net9.0\win-x64\MediaFetcherAvalonia.csproj.CoreCompileInputs.cache
 D:\Documents\Project\MediaFetcherAvalonia\obj\Release\net9.0\win-x64\Avalonia\MediaFetcherAvalonia.dll
-D:\Documents\Project\MediaFetcherAvalonia\obj\Release\net9.0\win-x64\Avalonia\MediaFetcherAvalonia.pdb
 D:\Documents\Project\MediaFetcherAvalonia\obj\Release\net9.0\win-x64\refint\Avalonia\MediaFetcherAvalonia.dll
 D:\Documents\Project\MediaFetcherAvalonia\obj\Release\net9.0\win-x64\MediaFet.17D9B1FB.Up2Date
 D:\Documents\Project\MediaFetcherAvalonia\obj\Release\net9.0\win-x64\MediaFetcherAvalonia.genruntimeconfig.cache
 D:\Documents\Project\MediaFetcherAvalonia\obj\Release\net9.0\win-x64\ref\MediaFetcherAvalonia.dll
+D:\Documents\Project\MediaFetcherAvalonia\obj\Release\net9.0\win-x64\MediaFetcherAvalonia.sourcelink.json

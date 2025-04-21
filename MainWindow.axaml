@@ -1,42 +1,45 @@
 <Window
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ui="using:FluentAvalonia.UI.Controls"
+    xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
     x:Class="MediaFetcherAvalonia.MainWindow"
-    Title=" MediaFetcher"
+    Title="MediaFetcher"
     Width="960"
     Height="540"
     WindowState="Maximized"
-    Icon="/Assets/MediaFetcher.ico">
+    Icon="/Assets/MediaFetcher.ico"
+    UseLayoutRounding="True"
+    TransparencyLevelHint="Mica, Transparent"
+    Background="Transparent">
 
-  <ui:NavigationView
+  <fa:NavigationView
       x:Name="NavView"
-      PaneDisplayMode="LeftCompact"
+      PaneDisplayMode="Left"
       IsPaneOpen="False"
       IsBackButtonVisible="False"
-      IsSettingsVisible="False"
-      >
+      IsSettingsVisible="False">
 
     <!-- TOP menu only has Home -->
-    <ui:NavigationView.MenuItems>
-      <ui:NavigationViewItem Tag="HomePage" Content="Home">
-        <ui:NavigationViewItem.IconSource>
-          <ui:SymbolIconSource Symbol="Home"/>
-        </ui:NavigationViewItem.IconSource>
-      </ui:NavigationViewItem>
-    </ui:NavigationView.MenuItems>
-    
-      <!-- FOOTER menu holds Settings -->
-    <ui:NavigationView.FooterMenuItems>
-      <ui:NavigationViewItem Tag="SettingsPage" Content="Settings">
-        <ui:NavigationViewItem.IconSource>
-          <ui:SymbolIconSource Symbol="Settings"/>
-        </ui:NavigationViewItem.IconSource>
-      </ui:NavigationViewItem>
-    </ui:NavigationView.FooterMenuItems>
+    <fa:NavigationView.MenuItems>
+      <fa:NavigationViewItem Tag="HomePage" Content="Home">
+        <fa:NavigationViewItem.IconSource>
+          <fa:SymbolIconSource Symbol="Home" />
+        </fa:NavigationViewItem.IconSource>
+      </fa:NavigationViewItem>
+    </fa:NavigationView.MenuItems>
 
-    <ui:NavigationView.Content>
-      <Grid>
+    <!-- FOOTER menu holds Settings -->
+    <fa:NavigationView.FooterMenuItems>
+      <fa:NavigationViewItem Tag="SettingsPage" Content="Settings">
+        <fa:NavigationViewItem.IconSource>
+          <fa:SymbolIconSource Symbol="Settings" />
+        </fa:NavigationViewItem.IconSource>
+      </fa:NavigationViewItem>
+    </fa:NavigationView.FooterMenuItems>
+
+    <!-- Main content area -->
+    <fa:NavigationView.Content>
+<Grid>
         <!-- HOME PAGE -->
         <Grid
             x:Name="HomePage"
@@ -47,7 +50,7 @@
           <!-- Row 0: URL input -->
           <!--<TextBlock Grid.Row="0" Text="Enter a URL:"/> -->
           <Grid Grid.Row="1" ColumnDefinitions="* 8 Auto">
-            <TextBox x:Name="UrlBox" Grid.Column="0" Watermark="Enter a URL of media" KeyDown="UrlBox_KeyDown"/>
+            <TextBox x:Name="UrlBox" Grid.Column="0" Watermark="Enter a URL of media" VerticalContentAlignment="Center" KeyDown="UrlBox_KeyDown"/>
             <Button x:Name="DownloadBtn" Content="Fetch" Grid.Column="2" IsDefault="True"/>
           </Grid>
 
@@ -108,14 +111,14 @@
                        Watermark="Enter a directory"/>
               <Button x:Name="BrowseDirectoryBtn" Grid.Column="2" Content="Browse..." />
             </Grid>
-            <TextBlock x:Name="CurrentOutputDirBlock" Foreground="Gray" Margin="0,4,0,8" 
+            <TextBlock x:Name="CurrentOutputDirBlock" Classes="description" Margin="0,4,0,8" 
                        TextWrapping="Wrap" FontSize="12"/>
             
             <!-- Custom file name -->
             <TextBlock Text="Custom File Name Template:"/>
             <TextBox x:Name="CustomFileNameBox"
                      Watermark="%(title)s.%(ext)s"/>
-            <TextBlock Foreground="Gray" Margin="0,4,0,8" FontSize="12">
+            <TextBlock Classes="description" Margin="0,4,0,8" FontSize="12">
               Example: "%(title)s.%(ext)s" creates files using video title
             </TextBlock>
 
@@ -127,7 +130,7 @@
                 <ComboBoxItem Content="Ignore Errors" Tag="IgnoreErrors"/>
                 <ComboBoxItem Content="Abort on Error" Tag="AbortOnErrors"/>
               </ComboBox>
-              <TextBlock Foreground="Gray" Margin="0,4,0,8" FontSize="12">
+              <TextBlock Classes="description" Margin="0,4,0,8" FontSize="12">
                 "Ignore Errors" continues downloading when errors occur, "Abort on Error" stops the process
               </TextBlock>
             </StackPanel>
@@ -141,6 +144,7 @@
         </ScrollViewer>
 
       </Grid>
-    </ui:NavigationView.Content>
-  </ui:NavigationView>
+    </fa:NavigationView.Content>
+
+  </fa:NavigationView>
 </Window>

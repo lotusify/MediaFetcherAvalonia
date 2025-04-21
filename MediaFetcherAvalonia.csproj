@@ -7,6 +7,8 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <ApplicationIcon>Assets\MediaFetcher.ico</ApplicationIcon>
+	<PublishSingleFile>true</PublishSingleFile>
+	<DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

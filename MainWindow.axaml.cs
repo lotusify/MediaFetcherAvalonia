@@ -12,6 +12,11 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using FluentAvalonia.UI.Controls;
+using System.Collections.ObjectModel;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Styling;
 
 namespace MediaFetcherAvalonia
 {
@@ -27,7 +32,7 @@ namespace MediaFetcherAvalonia
         public MainWindow()
         {
             InitializeComponent();
-            
+
             // Load app settings
             _settings = AppSettings.Load();
     
@@ -180,7 +185,7 @@ namespace MediaFetcherAvalonia
             Log("Settings saved successfully.");
             
             // Navigate back to home page
-            NavView.SelectedItem = NavView.MenuItems[0];
+            // NavView.SelectedItem = NavView.MenuItems[0];
         }
 
         private void UpdateFormatList()
