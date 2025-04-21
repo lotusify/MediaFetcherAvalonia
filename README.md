@@ -1,6 +1,6 @@
 <img src="Assets/MediaFetcher.ico" alt="MediaFetcherAvalonia Icon" width="64"/>
 
-# MediaFetcherAvalonia
+# MediaFetcher
 
 A desktop application built with Avalonia (a cross-platform UI framework for .NET) that acts as a graphical frontend for the popular command-line media downloader `yt-dlp`.
 
