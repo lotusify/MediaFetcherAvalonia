@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MediaFetcherAvalonia")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+811b9308ea60301cb79391ea72c5e33b06fa0f95")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+751edca9f1a8ad48284b66ceb4fcebe5c8cc7a72")]
 [assembly: System.Reflection.AssemblyProductAttribute("MediaFetcherAvalonia")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MediaFetcherAvalonia")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
