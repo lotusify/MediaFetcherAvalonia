@@ -55,7 +55,7 @@ The difference lies in the inclusion of external tools:
   * Includes the application but **does NOT include `yt-dlp` or `ffmpeg`**.
   * **Requires `yt-dlp`**: You must provide your own `yt-dlp` executable. Place it in the application folder or ensure it's in your system's PATH. Download from the [official yt-dlp GitHub repository](https://github.com/yt-dlp/yt-dlp).
   * **Requires `ffmpeg` (Optional but really recommended)**: You should provide your own `ffmpeg` executable for best results (merging, format conversion). Place it with `yt-dlp` or ensure it's in PATH. Download from [here](https://ffmpeg.org/download.html).
-  * Choose this if you prefer to manage/update `yt-dlp` and `ffmpeg` yourself.
+  * Choose this if you prefer to install `yt-dlp` and `ffmpeg` yourself.
 
 ## 🚀 Usage
 
@@ -74,7 +74,7 @@ The difference lies in the inclusion of external tools:
 * **Manual Dependency Installation**: Does not automatically download or install `yt-dlp` or `ffmpeg` (unless using the Packed release version).
 * **No Playlist Item Selection**: When downloading a playlist, the entire playlist is downloaded; there is no option to select specific videos from it.
 * **Limited Customization**: Lacks basic options like theme selection.
-* **Manual Dependency Management**: Does not manage `yt-dlp`/`ffmpeg` updates or versions; users must handle this themselves (unless using the Packed release version).
+* **Manual Dependency Management**: Does not manage `yt-dlp`/`ffmpeg` updates or versions; users must handle this themselves.
 * **Missing Advanced Options**: Does not include many advanced `yt-dlp` features like SponsorBlock integration, etc., unless added via Custom Arguments.
 
 ## 🤔 Feedback
