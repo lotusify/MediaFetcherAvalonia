@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Avalonia.Platform.Storage;
@@ -100,6 +101,8 @@ namespace MediaFetcherAvalonia
             CustomOutputTemplateBox.Text = _settings.CustomOutputDirectory;
             CustomFileNameBox.Text = _settings.CustomFileNameTemplate;
             ErrorHandlingCombo.SelectedIndex = (int)_settings.ErrorHandling;
+            CustomArgsBox.Text = _settings.CustomExtraArgs;
+            PreferredLangBox.Text = _settings.PreferredLanguages;
             UpdateCurrentOutputDirectoryDisplay();
         }
 
@@ -221,7 +224,8 @@ namespace MediaFetcherAvalonia
             _settings.CustomOutputDirectory = CustomOutputTemplateBox.Text?.Trim() ?? string.Empty;
             _settings.CustomFileNameTemplate = CustomFileNameBox.Text?.Trim() ?? AppSettings.DefaultFileNameTemplate; // Use default if empty
             _settings.ErrorHandling = (ErrorHandlingMode)ErrorHandlingCombo.SelectedIndex;
-
+            _settings.CustomExtraArgs = CustomArgsBox.Text?.Trim() ?? string.Empty;
+            _settings.PreferredLanguages = PreferredLangBox.Text?.Trim() ?? "";
             _settings.Save();
             UpdateCurrentOutputDirectoryDisplay();
             Log("Settings saved successfully.");
@@ -414,7 +418,28 @@ namespace MediaFetcherAvalonia
             
             // Encoding UTF-8 to resolve Unicode characters issue (like Vietnamese characters)
             argsBuilder.Append(" --encoding utf-8");
+            
+            // Preferred Languages
+            if (!string.IsNullOrWhiteSpace(_settings.PreferredLanguages))
+            {
+                // split on commas, trim out empty entries
+                var langs = _settings.PreferredLanguages
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(l => l.Trim());
 
+                foreach (var lang in langs)
+                {
+                    // Note the leading space—keeps us from concatenating words together
+                    argsBuilder.Append($" --extractor-args \"youtube:lang={lang}\"");
+                }
+            }
+            
+            if (!string.IsNullOrWhiteSpace(_settings.CustomExtraArgs))
+            {
+                // Append a space before adding the extra args
+                argsBuilder.Append($" {_settings.CustomExtraArgs}"); 
+            }
+            
             // Finally, the URL (ensure basic quoting)
             argsBuilder.Append($" \"{url}\"");
 
@@ -751,7 +776,6 @@ namespace MediaFetcherAvalonia
         private void UpdateCurrentOutputDirectoryDisplay()
         {
             string outputDir = GetEnsuredOutputDirectory(); // Use helper to get/create dir
-            CurrentOutputDirBlock.Text = $"Current directory: {outputDir}";
         }
 
         // Simple error dialog
@@ -776,6 +800,31 @@ namespace MediaFetcherAvalonia
                       await dialog.ShowAsync(); // Show without owner if necessary
                  }
              });
+        }
+
+        private void LanguageListLinkButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is string url && Uri.IsWellFormedUriString(url, UriKind.Absolute))
+            {
+                try
+                {
+                    // Use Process.Start to open the URL in the default browser
+                    // Need to configure ProcessStartInfo for cross-platform compatibility
+                    ProcessStartInfo psi = new ProcessStartInfo
+                    {
+                        FileName = url,
+                        UseShellExecute = true // Important for opening URLs in the default browser
+                    };
+                    Process.Start(psi);
+                }
+                catch (Exception ex)
+                {
+                    // Handle potential errors (e.g., browser not found, invalid URL format after check)
+                    Debug.WriteLine($"Error opening URL: {ex.Message}");
+                    // Optionally show an error message to the user
+                    // await ShowError($"Could not open link: {ex.Message}");
+                }
+            }
         }
     }
 }

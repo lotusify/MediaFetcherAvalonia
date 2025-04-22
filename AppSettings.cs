@@ -16,6 +16,10 @@ namespace MediaFetcherAvalonia
         public string CustomOutputDirectory { get; set; } = string.Empty;
         public string CustomFileNameTemplate { get; set; } = "%(title)s.%(ext)s";
         public static string DefaultFileNameTemplate { get; set; } = "%(title)s.%(ext)s";
+        
+        public string CustomExtraArgs { get; set; } = string.Empty;
+        
+        public string PreferredLanguages { get; set; } = "";
         public ErrorHandlingMode ErrorHandling { get; set; } = ErrorHandlingMode.None;
         
         // For backwards compatibility with existing settings files

@@ -2,6 +2,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+    xmlns:doc="using:Avalonia.Controls.Documents"
     x:Class="MediaFetcherAvalonia.MainWindow"
     Title="MediaFetcher"
     Width="960"
@@ -10,6 +11,26 @@
     Icon="/Assets/MediaFetcher.ico"
     UseLayoutRounding="True"
     TransparencyLevelHint="Transparent">
+  
+  <Window.Styles>
+    <Style Selector="Button.LinkButton">
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Margin" Value="0,0"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Foreground" Value="#0066CC"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="TextBlock.TextDecorations" Value="{x:Null}"/>
+    </Style>
+
+    <Style Selector="Button.LinkButton:pointerover">
+      <Setter Property="TextBlock.TextDecorations" Value="Underline"/>
+    </Style>
+
+    <Style Selector="Button.LinkButton:pressed">
+      <Setter Property="Foreground" Value="#800080"/>
+    </Style>
+  </Window.Styles>
   
   <!-- Background="Transparent" -->
 
@@ -118,19 +139,17 @@
 
             <!-- Current/custom output directory -->
             <TextBlock Text="Output Directory:"/>
-            <Grid ColumnDefinitions="* 8 Auto">
+            <Grid ColumnDefinitions="* 8 Auto" Margin="0,4,0,12">
               <TextBox x:Name="CustomOutputTemplateBox" Grid.Column="0"
                        Watermark="Enter a directory"/>
               <Button x:Name="BrowseDirectoryBtn" Grid.Column="2" Content="Browse..." />
             </Grid>
-            <TextBlock x:Name="CurrentOutputDirBlock" Classes="description" Margin="0,4,0,8" 
-                       TextWrapping="Wrap" FontSize="12"/>
             
             <!-- Custom file name -->
             <TextBlock Text="Custom File Name Template:"/>
             <TextBox x:Name="CustomFileNameBox"
                      Watermark="%(title)s.%(ext)s"/>
-            <TextBlock Classes="description" Margin="0,4,0,8" FontSize="12">
+            <TextBlock Margin="0,4,0,8" FontSize="11.6">
               Example: "%(title)s.%(ext)s" creates files using video title
             </TextBlock>
 
@@ -142,10 +161,35 @@
                 <ComboBoxItem Content="Ignore Errors" Tag="IgnoreErrors"/>
                 <ComboBoxItem Content="Abort on Error" Tag="AbortOnErrors"/>
               </ComboBox>
-              <TextBlock Classes="description" Margin="0,4,0,8" FontSize="12">
+              <TextBlock Margin="0,4,0,8" FontSize="11.6">
                 "Ignore Errors" continues downloading when errors occur, "Abort on Error" stops the process
               </TextBlock>
             </StackPanel>
+            
+            <TextBlock Text="Preferred Title Languages (separated by comma):" Margin="0,12,0,4"/>
+            <TextBox
+              x:Name="PreferredLangBox"
+              Watermark="e.g. vi,en,ja"/>
+            <TextBlock Margin="0,4,0,8" FontSize="12" TextWrapping="Wrap">
+              <TextBlock.Inlines>
+                <Run Text="You can see a list of supported language"/>
+
+                <InlineUIContainer BaselineAlignment="Baseline">
+                  <Button Name="LanguageListLinkButton"
+                          Content="here"
+                          Classes="LinkButton"
+                          Click="LanguageListLinkButton_OnClick"
+                          Tag="https://github.com/yt-dlp/yt-dlp/blob/c26f9b991a0681fd3ea548d535919cec1fbbd430/yt_dlp/extractor/youtube.py#L381-L390"/>
+                </InlineUIContainer>
+              </TextBlock.Inlines>
+            </TextBlock>
+            
+            <TextBlock Text="Extra yt-dlp arguments:" Margin="0,12,0,4"/>
+            <TextBox
+              x:Name="CustomArgsBox"
+              Watermark="additional argument after format, resolution, media type,... based on your choice"
+              AcceptsReturn="False"/>
+
             
             <!-- Save button -->
             <Button x:Name="SaveSettingsBtn"
