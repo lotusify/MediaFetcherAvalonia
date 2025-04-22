@@ -52,6 +52,11 @@
 
     <!-- FOOTER menu holds Settings -->
     <fa:NavigationView.FooterMenuItems>
+      <fa:NavigationViewItem Content="GitHub" Tag="GitHubLink">
+        <fa:NavigationViewItem.IconSource>
+          <fa:SymbolIconSource Symbol="Link" />
+        </fa:NavigationViewItem.IconSource>
+      </fa:NavigationViewItem>
       <fa:NavigationViewItem Tag="SettingsPage" Content="Settings">
         <fa:NavigationViewItem.IconSource>
           <fa:SymbolIconSource Symbol="Settings" />
@@ -189,13 +194,19 @@
               x:Name="CustomArgsBox"
               Watermark="additional argument after format, resolution, media type,... based on your choice"
               AcceptsReturn="False"/>
+            
+            <TextBlock Text="MediaFetcher v1.1.1"
+                       FontSize="12"
+                       Foreground="Gray"
+                       HorizontalAlignment="Left"
+                       Margin="0,5,0,0"/>
 
             
             <!-- Save button -->
             <Button x:Name="SaveSettingsBtn"
                     Content="Save Settings"
                     HorizontalAlignment="Left"
-                    Margin="0,24,0,0"
+                    Margin="0,10,0,0"
                     Classes="accent"/>
           </StackPanel>
         </ScrollViewer>

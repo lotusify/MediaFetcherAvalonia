@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using Avalonia.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
@@ -26,6 +28,7 @@ namespace MediaFetcherAvalonia
         private readonly string[] _videoFormats = { "mp4", "webm", "mkv" };
         private readonly string[] _audioFormats = { "mp3", "m4a", "opus", "aac", "flac", "wav", "vorbis" };
         private const string YT_DLP_TOOL_NAME = "yt-dlp"; // Use constant for tool name
+        private object? _lastSelectedItem;
 
         // --- State & Settings ---
         private readonly AppSettings _settings;
@@ -113,6 +116,52 @@ namespace MediaFetcherAvalonia
         // Handles actual changes triggered by user interaction or programmatic selection changes
         private void NavigationView_SelectionChanged(object? sender, NavigationViewSelectionChangedEventArgs e)
         {
+             var selectedItem = e.SelectedItem as NavigationViewItem;
+                string? tag = selectedItem?.Tag?.ToString();
+            
+                if (tag == "GitHubLink")
+                {
+                    // --- Handle the GitHub Link ---
+                    string githubUrl = "https://github.com/lotusify/MediaFetcherAvalonia"; // Your repo URL
+            
+                    try
+                    {
+                        ProcessStartInfo psi = new ProcessStartInfo
+                        {
+                            FileName = githubUrl,
+                            UseShellExecute = true
+                        };
+                        Process.Start(psi);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Error opening GitHub URL: {ex.Message}");
+                        // Optionally show error to user
+                        // await ShowError($"Could not open link: {ex.Message}");
+                    }
+            
+                    // --- IMPORTANT: Reset Selection ---
+                    // Prevent navigation and reset selection back to the last actual page item
+                    // Use Dispatcher to avoid issues modifying selection during the event
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                         if (NavView != null) // Ensure NavView is accessible
+                         {
+                              NavView.SelectedItem = _lastSelectedItem ?? NavView.MenuItems.FirstOrDefault(); // Fallback to first item if needed
+                         }
+                    }, DispatcherPriority.Background); // Use Background priority to run after current layout pass
+            
+                }
+                else if (tag != null) // Handle regular page navigation
+                {
+                    // --- Your existing page navigation logic ---
+                    // e.g., Navigate to different frames/views based on tag ("HomePage", "SettingsPage")
+                     UpdateMainView(selectedItem); // Assuming this handles page switching
+            
+                     // --- Store the last *valid page* item selected ---
+                     _lastSelectedItem = selectedItem;
+                }
+                // Handle cases where selectedItem or tag is null if necessary
             UpdateMainView(e.SelectedItem); // Call the common logic method
         }
 
