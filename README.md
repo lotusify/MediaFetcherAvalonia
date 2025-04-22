@@ -51,7 +51,7 @@ The difference lies in the inclusion of external tools:
   * Includes the application AND the `yt-dlp` and `ffmpeg` executables. Ready to run out of the box.
 
 * **💨 No Dependencies Version**
-  * Download the **"NoLibrary"** version from the [Releases](https://github.com/lotusify/MediaFetcherAvalonia/releases/latest) page.
+  * Download the **"NoLibrary"** version (`*NoLibrary.zip`)from the [Releases](https://github.com/lotusify/MediaFetcherAvalonia/releases/latest) page.
   * Includes the application but **does NOT include `yt-dlp` or `ffmpeg`**.
   * **Requires `yt-dlp`**: You must provide your own `yt-dlp` executable. Place it in the application folder or ensure it's in your system's PATH. Download from the [official yt-dlp GitHub repository](https://github.com/yt-dlp/yt-dlp).
   * **Requires `ffmpeg` (Optional but really recommended)**: You should provide your own `ffmpeg` executable for best results (merging, format conversion). Place it with `yt-dlp` or ensure it's in PATH. Download from [here](https://ffmpeg.org/download.html).
