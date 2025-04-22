@@ -78,7 +78,7 @@
           <!--<TextBlock Grid.Row="0" Text="Enter a URL:"/> -->
           <Grid Grid.Row="1" ColumnDefinitions="* 8 Auto 8 Auto">
             <TextBox x:Name="UrlBox" Grid.Column="0" Watermark="Enter a URL of media" VerticalContentAlignment="Center" KeyDown="UrlBox_KeyDown"/>
-            <Button x:Name="DownloadBtn" Content="Fetch" Grid.Column="2" IsDefault="True" Classes="accent" MinWidth="80"/>
+            <Button x:Name="DownloadBtn" Content="Fetch" Grid.Column="2" IsDefault="True" Classes="accent" MinWidth="70"/>
             <Button Grid.Column="4" Name="CancelBtn" Content="Stop" IsEnabled="False" MinWidth="65" Click="CancelBtn_Click"/>
           </Grid>
 
