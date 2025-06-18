@@ -71,10 +71,15 @@
         <Grid
             x:Name="HomePage"
             Margin="20"
-            RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*"
+            RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*,*"
             IsVisible="True">
 
           <!-- Row 0: URL input -->
+          <Grid Grid.Row="0" ColumnDefinitions="* 8 Auto">
+            <TextBox x:Name="SearchBox" Grid.Column="0" Watermark="Search term"/>
+            <Button x:Name="SearchBtn" Grid.Column="2" Content="Search" Click="SearchBtn_Click"/>
+          </Grid>
+
           <!--<TextBlock Grid.Row="0" Text="Enter a URL:"/> -->
           <Grid Grid.Row="1" ColumnDefinitions="* 8 Auto 8 Auto">
             <TextBox x:Name="UrlBox" Grid.Column="0" Watermark="Enter a URL of media" VerticalContentAlignment="Center" KeyDown="UrlBox_KeyDown"/>
@@ -90,6 +95,7 @@
                       Spacing="12">
             <CheckBox x:Name="ForceCheck" Content="Force format" IsChecked="True"/>
             <CheckBox x:Name="PlaylistCheck" Content="Playlist"/>
+            <TextBox x:Name="PlaylistItemsBox" Width="120" Watermark="items e.g. 1,3"/>
           </StackPanel>
 
           <!-- Row 2: Media Type / Format / Resolution -->
@@ -123,9 +129,20 @@
                        IsIndeterminate="True"
                        IsVisible="False"
                        Margin="0,5,0,10"/>
-          
+
+          <ListBox x:Name="QueueList" Grid.Row="6" Margin="0,0,0,10">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Vertical">
+                  <TextBlock Text="{Binding Url}"/>
+                  <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}"/>
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+
           <!-- Row 4: Resizable log area -->
-          <ScrollViewer Grid.Row="6">
+          <ScrollViewer Grid.Row="7">
             <TextBox x:Name="LogBox"
                      IsReadOnly="True"
                      AcceptsReturn="True"
@@ -194,6 +211,31 @@
               x:Name="CustomArgsBox"
               Watermark="additional argument after format, resolution, media type,... based on your choice"
               AcceptsReturn="False"/>
+
+            <TextBlock Text="Cookies File:" Margin="0,12,0,4"/>
+            <TextBox x:Name="CookiesPathBox" Watermark="cookies.txt"/>
+
+            <TextBlock Text="Netrc File:" Margin="0,12,0,4"/>
+            <TextBox x:Name="NetrcPathBox" Watermark="~/.netrc"/>
+
+            <TextBlock Text="Username:" Margin="0,12,0,4"/>
+            <TextBox x:Name="UsernameBox"/>
+            <TextBlock Text="Password:" Margin="0,4,0,4"/>
+            <TextBox x:Name="PasswordBox" PasswordChar='*'/>
+
+            <TextBlock Text="Subtitle Languages (comma separated):" Margin="0,12,0,4"/>
+            <TextBox x:Name="SubtitleLangBox" Watermark="en,vi"/>
+
+            <TextBlock Text="Download Archive File:" Margin="0,12,0,4"/>
+            <TextBox x:Name="DownloadArchiveBox" Watermark="archive.txt"/>
+
+            <TextBlock Text="SponsorBlock Categories:" Margin="0,12,0,4"/>
+            <WrapPanel>
+              <CheckBox x:Name="SbSponsor" Content="sponsor" Margin="0,0,8,0"/>
+              <CheckBox x:Name="SbIntro" Content="intro" Margin="0,0,8,0"/>
+              <CheckBox x:Name="SbOutro" Content="outro" Margin="0,0,8,0"/>
+              <CheckBox x:Name="SbInteraction" Content="interaction" Margin="0,0,8,0"/>
+            </WrapPanel>
             
             <TextBlock Text="MediaFetcher v1.1.1"
                        FontSize="12"
