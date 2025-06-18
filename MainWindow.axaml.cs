@@ -19,6 +19,7 @@ using System.Linq; // Used in BuildArgs logic
 using System.Text; // For StringBuilder potentially
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace MediaFetcherAvalonia
 {
@@ -34,17 +35,19 @@ namespace MediaFetcherAvalonia
         private readonly AppSettings _settings;
         private CancellationTokenSource? _cancellationTokenSource;
         private readonly List<string> _logBuffer = new List<string>();
+        private readonly ObservableCollection<DownloadItem> _queue = new();
+        private bool _isDownloading;
         // private string _currentDownloadFile = string.Empty; // Removed as it wasn't used in UpdateProgress
 
         //---------------------------------------------------------------------
         // Constructor and Initialization
         //---------------------------------------------------------------------
 
-        public MainWindow()
+        public MainWindow(AppSettings? settings = null)
         {
             InitializeComponent();
 
-            _settings = AppSettings.Load();
+            _settings = settings ?? AppSettings.Load();
 
             SetupEventHandlers();
             InitializeUIState();
@@ -60,6 +63,7 @@ namespace MediaFetcherAvalonia
             SaveSettingsBtn.Click += SaveSettingsBtn_Click;
             BrowseDirectoryBtn.Click += BrowseDirectoryBtn_Click;
             UrlBox.KeyDown += UrlBox_KeyDown;
+            SearchBtn.Click += SearchBtn_Click;
         }
 
         private void InitializeUIState()
@@ -92,6 +96,8 @@ namespace MediaFetcherAvalonia
             ResolutionCombo.SelectedIndex = 0;
             UpdateResolutionComboState(); // Set initial enabled state
 
+            QueueList.Items = _queue;
+
             // *** Settings Page ***
             InitializeSettingsPage();
 
@@ -106,6 +112,22 @@ namespace MediaFetcherAvalonia
             ErrorHandlingCombo.SelectedIndex = (int)_settings.ErrorHandling;
             CustomArgsBox.Text = _settings.CustomExtraArgs;
             PreferredLangBox.Text = _settings.PreferredLanguages;
+            CookiesPathBox.Text = _settings.CookiesPath;
+            NetrcPathBox.Text = _settings.NetrcPath;
+            UsernameBox.Text = _settings.Username;
+            PasswordBox.Text = _settings.Password;
+            SubtitleLangBox.Text = _settings.SubtitleLanguages;
+            DownloadArchiveBox.Text = _settings.DownloadArchivePath;
+            foreach (var cat in (_settings.SponsorBlockCategories ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries))
+            {
+                switch (cat.Trim())
+                {
+                    case "sponsor": SbSponsor.IsChecked = true; break;
+                    case "intro": SbIntro.IsChecked = true; break;
+                    case "outro": SbOutro.IsChecked = true; break;
+                    case "interaction": SbInteraction.IsChecked = true; break;
+                }
+            }
             UpdateCurrentOutputDirectoryDisplay();
         }
 
@@ -275,6 +297,18 @@ namespace MediaFetcherAvalonia
             _settings.ErrorHandling = (ErrorHandlingMode)ErrorHandlingCombo.SelectedIndex;
             _settings.CustomExtraArgs = CustomArgsBox.Text?.Trim() ?? string.Empty;
             _settings.PreferredLanguages = PreferredLangBox.Text?.Trim() ?? "";
+            _settings.CookiesPath = CookiesPathBox.Text?.Trim() ?? string.Empty;
+            _settings.NetrcPath = NetrcPathBox.Text?.Trim() ?? string.Empty;
+            _settings.Username = UsernameBox.Text?.Trim() ?? string.Empty;
+            _settings.Password = PasswordBox.Text?.Trim() ?? string.Empty;
+            _settings.SubtitleLanguages = SubtitleLangBox.Text?.Trim() ?? string.Empty;
+            _settings.DownloadArchivePath = DownloadArchiveBox.Text?.Trim() ?? string.Empty;
+            var sbCats = new List<string>();
+            if (SbSponsor.IsChecked == true) sbCats.Add("sponsor");
+            if (SbIntro.IsChecked == true) sbCats.Add("intro");
+            if (SbOutro.IsChecked == true) sbCats.Add("outro");
+            if (SbInteraction.IsChecked == true) sbCats.Add("interaction");
+            _settings.SponsorBlockCategories = string.Join(",", sbCats);
             _settings.Save();
             UpdateCurrentOutputDirectoryDisplay();
             Log("Settings saved successfully.");
@@ -287,6 +321,15 @@ namespace MediaFetcherAvalonia
             {
                 DownloadBtn_Click(DownloadBtn, new RoutedEventArgs());
                 e.Handled = true; // Prevent further processing of the Enter key
+            }
+        }
+
+        private void SearchBtn_Click(object? sender, RoutedEventArgs e)
+        {
+            var query = SearchBox.Text?.Trim();
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                UrlBox.Text = $"ytsearch5:{query}";
             }
         }
 
@@ -317,55 +360,45 @@ namespace MediaFetcherAvalonia
                 return;
             }
 
-            // Dispose previous CTS and create a new one
-            _cancellationTokenSource?.Dispose();
-            _cancellationTokenSource = new CancellationTokenSource();
-            var cancellationToken = _cancellationTokenSource.Token;
-
-            SetUIDownloadingState(true);
-            LogBox.Text = ""; // Clear log display
-            _logBuffer.Clear();
-
-            try
+            _queue.Add(new DownloadItem { Url = url });
+            if (!_isDownloading)
             {
-                 await StartDownloadAsync(url, cancellationToken); // Call the refactored method
-
-                // Log completion status (only if not cancelled)
-                if (!cancellationToken.IsCancellationRequested)
-                {
-                    Log("Download process finished.");
-                }
-            }
-            catch (OperationCanceledException) // Catch cancellation specifically
-            {
-                Log("Download process was cancelled by user.");
-            }
-            catch (FileNotFoundException fnfEx) // Catch specific file not found for yt-dlp
-            {
-                Log($"ERROR: Required tool not found - {fnfEx.Message}");
-                 // ShowError was likely called already when GetToolPath returned null
-            }
-            catch (Exception ex) // Catch other unexpected errors during setup or execution
-            {
-                Log($"\n--- UNEXPECTED ERROR ---");
-                Log($"Message: {ex.Message}");
-                Log($"Type: {ex.GetType().FullName}");
-                #if DEBUG
-                Log($"Stack Trace: {ex.StackTrace}");
-                #endif
-                Log($"--- END ERROR ---");
-                await ShowError($"An unexpected error occurred: {ex.Message}");
-            }
-            finally
-            {
-                // Ensure UI is always reset and CTS is cleaned up
-                _cancellationTokenSource?.Dispose();
-                _cancellationTokenSource = null;
-                SetUIDownloadingState(false);
+                _ = ProcessQueueAsync();
             }
         }
 
-        private async Task StartDownloadAsync(string url, CancellationToken cancellationToken)
+        private async Task ProcessQueueAsync()
+        {
+            _isDownloading = true;
+            while (_queue.Count > 0)
+            {
+                var item = _queue[0];
+
+                // Dispose previous CTS and create a new one
+                _cancellationTokenSource?.Dispose();
+                _cancellationTokenSource = new CancellationTokenSource();
+                var cancellationToken = _cancellationTokenSource.Token;
+
+                SetUIDownloadingState(true);
+                LogBox.Text = string.Empty;
+                _logBuffer.Clear();
+
+                try
+                {
+                    await StartDownloadAsync(item.Url, cancellationToken, item);
+                }
+                catch (Exception ex)
+                {
+                    Log($"ERROR: {ex.Message}");
+                }
+
+                _queue.Remove(item);
+            }
+            _isDownloading = false;
+            SetUIDownloadingState(false);
+        }
+
+        private async Task StartDownloadAsync(string url, CancellationToken cancellationToken, DownloadItem? item = null)
         {
              // 1. Find yt-dlp Path (using the corrected ExternalTools)
             string? ytDlpPath = ExternalTools.GetToolPath(YT_DLP_TOOL_NAME);
@@ -388,7 +421,7 @@ namespace MediaFetcherAvalonia
 
              // 3. Run the Process
              // No need for File.Exists check here, GetToolPath already did it.
-             await RunProcessAsync(ytDlpPath, args, cancellationToken);
+             await RunProcessAsync(ytDlpPath, args, cancellationToken, item);
         }
 
 
@@ -399,6 +432,10 @@ namespace MediaFetcherAvalonia
 
             // Playlist handling
             argsBuilder.Append(PlaylistCheck.IsChecked == true ? "--yes-playlist" : "--no-playlist");
+            if (!string.IsNullOrWhiteSpace(PlaylistItemsBox.Text))
+            {
+                argsBuilder.Append($" --playlist-items {PlaylistItemsBox.Text}");
+            }
 
             // Format/Resolution/Force
             if (TypeCombo.SelectedItem is not ComboBoxItem selectedTypeItem || selectedTypeItem.Tag == null ||
@@ -486,7 +523,41 @@ namespace MediaFetcherAvalonia
             if (!string.IsNullOrWhiteSpace(_settings.CustomExtraArgs))
             {
                 // Append a space before adding the extra args
-                argsBuilder.Append($" {_settings.CustomExtraArgs}"); 
+                argsBuilder.Append($" {_settings.CustomExtraArgs}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(_settings.CookiesPath))
+            {
+                argsBuilder.Append($" --cookies \"{_settings.CookiesPath}\"");
+            }
+
+            if (!string.IsNullOrWhiteSpace(_settings.NetrcPath))
+            {
+                argsBuilder.Append($" --netrc-location \"{_settings.NetrcPath}\"");
+            }
+
+            if (!string.IsNullOrWhiteSpace(_settings.Username))
+            {
+                argsBuilder.Append($" --username \"{_settings.Username}\"");
+            }
+            if (!string.IsNullOrWhiteSpace(_settings.Password))
+            {
+                argsBuilder.Append($" --password \"{_settings.Password}\"");
+            }
+
+            if (!string.IsNullOrWhiteSpace(_settings.DownloadArchivePath))
+            {
+                argsBuilder.Append($" --download-archive \"{_settings.DownloadArchivePath}\"");
+            }
+
+            if (!string.IsNullOrWhiteSpace(_settings.SubtitleLanguages))
+            {
+                argsBuilder.Append($" --sub-langs {_settings.SubtitleLanguages} --write-subs");
+            }
+
+            if (!string.IsNullOrWhiteSpace(_settings.SponsorBlockCategories))
+            {
+                argsBuilder.Append($" --sponsorblock-remove {_settings.SponsorBlockCategories}");
             }
             
             // Finally, the URL (ensure basic quoting)
@@ -563,7 +634,7 @@ namespace MediaFetcherAvalonia
              return outputDir;
         }
 
-        private Task RunProcessAsync(string fileName, string arguments, CancellationToken cancellationToken)
+        private Task RunProcessAsync(string fileName, string arguments, CancellationToken cancellationToken, DownloadItem? item)
         {
             var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -616,7 +687,7 @@ namespace MediaFetcherAvalonia
             {
                 if (e.Data != null && !cancellationToken.IsCancellationRequested)
                 {
-                    ProcessOutput(e.Data, isError: false, cancellationToken);
+                    ProcessOutput(e.Data, isError: false, cancellationToken, item);
                 }
             };
 
@@ -624,7 +695,7 @@ namespace MediaFetcherAvalonia
             {
                 if (e.Data != null && !cancellationToken.IsCancellationRequested)
                 {
-                    ProcessOutput(e.Data, isError: true, cancellationToken);
+                    ProcessOutput(e.Data, isError: true, cancellationToken, item);
                 }
             };
 
@@ -683,7 +754,7 @@ namespace MediaFetcherAvalonia
         }
 
          // Centralized output processing
-        private void ProcessOutput(string line, bool isError, CancellationToken cancellationToken)
+        private void ProcessOutput(string line, bool isError, CancellationToken cancellationToken, DownloadItem? item = null)
         {
              if (cancellationToken.IsCancellationRequested) return; // Extra check
 
@@ -692,7 +763,7 @@ namespace MediaFetcherAvalonia
          
               // Ensure we have valid UTF-8 content
               // Try parsing progress first
-              if (!isError && TryParseAndUpdateProgress(line))
+              if (!isError && TryParseAndUpdateProgress(line, item))
               {
                   // Progress was handled, don't log it as a normal line
                   return;
@@ -741,7 +812,7 @@ namespace MediaFetcherAvalonia
         }
 
         // Tries to parse yt-dlp progress line and update UI. Returns true if successful.
-        private bool TryParseAndUpdateProgress(string line)
+        private bool TryParseAndUpdateProgress(string line, DownloadItem? item = null)
         {
             // Example line: "[download]  1.5% of ~615.83MiB at 27.18MiB/s ETA 00:22"
             if (!line.Contains("[download]") || !line.Contains('%')) return false;
@@ -766,6 +837,10 @@ namespace MediaFetcherAvalonia
                         {
                             DownloadProgressBar.IsIndeterminate = false; // Now we have a value
                             DownloadProgressBar.Value = percentage;
+                        }
+                        if (item != null)
+                        {
+                            item.Progress = percentage;
                         }
                         // Update the log buffer with the original line to preserve Unicode characters
                         UpdateProgressLogLine(line);

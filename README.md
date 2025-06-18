@@ -15,6 +15,8 @@ You can check supported websites [here](https://github.com/yt-dlp/yt-dlp/blob/ma
 ![Application Screenshot 1](Assets/screenshot1.png)
 ![Application Screenshot 2](Assets/screenshot2.png)
 
+Additional documentation and screenshots are available in the [docs](docs/) folder.
+
 ## ✨ Features
 
 * **URL Input**: Simple text box to paste the URL of the media you want to download.
@@ -27,6 +29,7 @@ You can check supported websites [here](https://github.com/yt-dlp/yt-dlp/blob/ma
   * Audio Formats: mp3, m4a, opus, aac, flac, wav, vorbis
 * **Resolution Selection**: Choose video resolution from 144p up to 8K, including "Best" and "Worst" options.
 * **Playlist Handling**: Option to download entire playlists or just the single video specified by the URL.
+* **Playlist Item Selection**: Enter specific item numbers to download from a playlist.
 * **Force Format**: Option to force recoding or merging into the selected output format (requires `ffmpeg` to be available to `yt-dlp`).
 * **Custom Output**:
   * Specify a custom output directory.
@@ -35,10 +38,16 @@ You can check supported websites [here](https://github.com/yt-dlp/yt-dlp/blob/ma
   * View real-time download progress and speed.
   * See detailed logs from `yt-dlp`.
   * Cancel ongoing downloads.
+  * Queue multiple URLs with individual progress bars.
 * **Error Handling**: Configure how download errors are handled (None, Ignore Errors, Abort on Errors).
 * **Settings Persistence**: Saves configuration (output path, filename template, error handling) to a `settings.json` file.
 * **Preferred Metadata Language**: Set a preferred language code (e.g., `vi`, `en`) for YouTube titles/descriptions in Settings.
 * **Custom Arguments**: Add extra command-line arguments for `yt-dlp` via the Settings page for advanced use cases.
+* **SponsorBlock**: Remove segments such as sponsors, intros or outros via checkboxes.
+* **Authentication**: Provide cookies, netrc file or username/password for restricted videos.
+* **Subtitle Download**: Specify subtitle languages to automatically download and embed subtitles.
+* **Download Archive**: Skip already downloaded items using an archive file.
+* **Search Box**: Quickly build `ytsearch` URLs with history suggestions.
 
 ## 🛠️ Requirements
 

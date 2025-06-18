@@ -18,6 +18,14 @@ namespace MediaFetcherAvalonia
         public static string DefaultFileNameTemplate { get; set; } = "%(title)s.%(ext)s";
         
         public string CustomExtraArgs { get; set; } = string.Empty;
+
+        public string CookiesPath { get; set; } = string.Empty;
+        public string NetrcPath { get; set; } = string.Empty;
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string SubtitleLanguages { get; set; } = string.Empty;
+        public string DownloadArchivePath { get; set; } = string.Empty;
+        public string SponsorBlockCategories { get; set; } = string.Empty;
         
         public string PreferredLanguages { get; set; } = "";
         public ErrorHandlingMode ErrorHandling { get; set; } = ErrorHandlingMode.None;
